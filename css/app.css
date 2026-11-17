@@ -119,7 +119,7 @@ body{
 .hero-cap .t{font-family:'Noto Serif SC',serif;font-size:22px;font-weight:700;line-height:30px}
 .hero-cap .d{font-size:12px;line-height:18px;opacity:.85;margin-top:4px}
 
-.btn{height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;
+.btn{height:52px;width:100%;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;
   font-size:16px;font-weight:700;letter-spacing:.5px;border:none;cursor:pointer;font-family:inherit;transition:.14s;user-select:none}
 .btn:active{transform:scale(.98)}
 .btn-primary{background:var(--zhu);color:var(--white)}
