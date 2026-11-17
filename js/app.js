@@ -5,12 +5,18 @@
   const $ = id => document.getElementById(id);
   const app = $('app'), toastEl = $('toast'), mask = $('loadingMask');
 
+  const A = 'assets/';
+  const COVERS = ['art_door.png', 'art_flower.png', 'art_main.png', 'art_village.png', 'art_kite.jpg'];
+  const esc = s => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
   const TAB_HOME = { '览遗': 's01', '习艺': 's08', '游村': 's10', '会友': 's06' };
   const ORDER = ['s01','s02','s07','s13','s14','s15',
                  's08','s03','s09','s16','s17','s18',
                  's10','s04','s05','s19','s20','s21',
                  's06','s11','s22','s23','s24','s12'];
-  const state = { current: 's01', stack: [], people: 1, date: '周六 · 上午', ver: 2, notes: '' };
+  const state = { current: 's01', stack: [], people: 1, date: '周六 · 上午', ver: 2, notes: '', booking: null };
 
   /* 状态栏（动态时间） */
   function statusBar() {
@@ -94,9 +100,15 @@
     }
     if (id === 's03') updateVerUI();
     if (id === 's05') {
-      $('fPeople').textContent = state.people + ' 人';
-      $('fDate').textContent = state.date;
+      const b = state.booking;
+      $('fPeople').textContent = (b ? b.people : state.people) + ' 人';
+      $('fDate').textContent = b ? b.slot : state.date;
+      const t = $('bookTitle');
+      if (t) t.innerHTML = ICON.check + (b ? ` 预约已记录 · 编号 ${esc(b.booking_no)}` : ' 预约已记录');
+      const st = $('bookStatus');
+      if (st) st.textContent = b ? '已记录到云端' : '待提交';
     }
+    if (id === 's06') hydrateCommunity();
   }
 
   function go(id, push = true) {
@@ -150,6 +162,93 @@
     $('btnNextVer').innerHTML = (state.ver === 4 ? '完成最后一版，查看成图 ' : '完成本版，进入下一版 ') + ICON.arrow;
   }
 
+  /* ---------------- 云服务动作 ---------------- */
+
+  async function submitBooking(phone) {
+    if (!window.YYCloud || !YYCloud.isReady()) {
+      toast((window.YYCloud && YYCloud.getError()) || '云服务未连接，预约未保存', 3200);
+      return;
+    }
+    loading(true, '正在提交预约…');
+    try {
+      const row = await YYCloud.bookLesson({ slot: state.date, people: state.people, phone });
+      state.booking = row;
+      loading(false);
+      go('s05');
+      toast(`预约成功 · 编号 ${row.booking_no}`, 2600);
+      refreshCloudState();
+    } catch (e) {
+      loading(false);
+      state.booking = null;
+      toast('预约失败：' + (e && e.message ? e.message : '请稍后重试'), 3600);
+    }
+  }
+
+  async function submitWork() {
+    const nameEl = $('workName'), noteEl = $('workNote');
+    const title = ((nameEl && nameEl.value) || '').trim();
+    if (!title) { toast('请先填写作品名称'); return; }
+    if (!window.YYCloud || !YYCloud.isReady()) {
+      toast((window.YYCloud && YYCloud.getError()) || '云服务未连接，作品未发布', 3200);
+      return;
+    }
+    const chip = app.querySelector('[data-group="话题"] .chip.on');
+    const topic = chip ? chip.textContent.trim() : '套色练习';
+    loading(true, '正在发布作品…');
+    try {
+      await YYCloud.publishWork({
+        title,
+        note: (noteEl && noteEl.value) || '',
+        topic,
+        cover: 'art_flower.png',
+        author: '手艺学习者'
+      });
+      loading(false);
+      toast('作品已发布，已保存到云端', 2600);
+      go('s06', false);
+      refreshCloudState();
+    } catch (e) {
+      loading(false);
+      toast('发布失败：' + (e && e.message ? e.message : '请稍后重试'), 3600);
+    }
+  }
+
+  async function hydrateCommunity() {
+    const grid = $('communityGrid');
+    if (!grid || !window.YYCloud || !YYCloud.isReady()) return;
+    try {
+      const rows = await YYCloud.listWorks(2);
+      if (!rows || !rows.length) return;
+      grid.innerHTML = rows.map(r => {
+        const cover = COVERS.indexOf(r.cover) >= 0 ? r.cover : 'art_flower.png';
+        return `<div class="mini clickable" data-nav="s07"><img src="${A}${cover}" alt="${esc(r.title)}">
+          <div class="b"><div class="n">${esc(r.title)}</div><div class="d">${esc(r.note || '作者没有留下注解')}</div></div></div>`;
+      }).join('');
+    } catch (e) {
+      /* 读取失败时保留设计稿里的静态卡片，不打断浏览 */
+    }
+  }
+
+  async function refreshCloudState() {
+    const el = $('cloudState');
+    if (!el) return;
+    if (!window.YYCloud || !YYCloud.isReady()) {
+      el.textContent = '云服务未连接';
+      el.className = 'cloud-pill err';
+      el.title = (window.YYCloud && YYCloud.getError()) || '云服务 SDK 未能加载';
+      return;
+    }
+    try {
+      const s = await YYCloud.stats();
+      el.textContent = `云服务已连接 · 作品 ${s.works} · 预约 ${s.bookings}`;
+      el.className = 'cloud-pill';
+      el.title = '数据实时来自云数据库';
+    } catch (e) {
+      el.textContent = '云服务已连接 · 统计待刷新';
+      el.className = 'cloud-pill warn';
+    }
+  }
+
   /* 事件委托 */
   document.addEventListener('click', e => {
     const navEl = e.target.closest('[data-nav]');
@@ -182,8 +281,7 @@
             return;
           }
           err.style.display = 'none';
-          loading(true, '正在提交预约…');
-          setTimeout(() => { loading(false); go('s05'); toast('预约提交成功'); }, 900);
+          submitBooking(v);
           break;
         }
         case 'next-ver':
@@ -207,8 +305,7 @@
           toast('按题材筛选作品');
           break;
         case 'publish':
-          loading(true, '正在发布作品…');
-          setTimeout(() => { loading(false); toast('作品发布成功，感谢分享'); go('s06', false); }, 900);
+          submitWork();
           break;
         case 'back':
           back();
@@ -298,4 +395,5 @@
 
   paint();
   fitDevice();
+  refreshCloudState();
 })();

@@ -165,11 +165,11 @@
     <div class="hdr">
       <div class="kicker">预约已提交</div>
       <h1 class="serif" style="font-size:28px;line-height:38px">预约反馈</h1>
-      <div class="sub">这是一次模拟提交，不是有效预约凭证</div>
+      <div class="sub">已写入云端课程演示数据，不作为正式凭证</div>
       <div class="bar"></div>
     </div>
     <div class="result">
-      <div class="t">${ICON.check} 已走完提交步骤</div>
+      <div class="t" id="bookTitle">${ICON.check} 预约已记录</div>
       <div class="d">我们已收到你的预约，请留意确认消息</div>
     </div>
     <div class="info">
@@ -177,7 +177,7 @@
       <div class="r"><span class="k">体验内容</span><span class="v">套色入门</span></div>
       <div class="r"><span class="k">所选时段</span><span class="v" id="fDate">周六 · 上午</span></div>
       <div class="r"><span class="k">参加人数</span><span class="v" id="fPeople">1 人</span></div>
-      <div class="r"><span class="k">预约状态</span><span class="v" style="color:#2F6B58">仅供界面展示</span></div>
+      <div class="r"><span class="k">预约状态</span><span class="v" id="bookStatus" style="color:#2F6B58">已记录到云端</span></div>
     </div>
     <div>
       <div class="sec-title" style="font-size:18px;margin-bottom:12px">接下来可以做什么</div>
@@ -212,7 +212,7 @@
     </div>
     <button class="btn btn-green" data-action="more-works">浏览更多作品 ${ICON.arrow}</button>
     <div class="sec-title">社区里的练习 <span class="more" data-action="more-works">查看全部 ▸</span></div>
-    <div class="two">
+    <div class="two" id="communityGrid">
       <div class="mini clickable" data-nav="s07"><img src="${A}art_door.png" alt="守护意象">
         <div class="b"><div class="n">年画中的守护意象</div><div class="d">一笔墨线，藏着一份祝愿。</div></div></div>
       <div class="mini clickable" data-nav="s07"><img src="${A}art_flower.png" alt="吉祥纹样">

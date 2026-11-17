@@ -46,7 +46,10 @@ body{
 .side-foot-row{display:flex;justify-content:space-between;font-size:11px;color:#7E7469;padding:4px 2px}
 .side-foot-row b{color:#C9BFB2;font-weight:600}
 .side-foot-row b.ok{color:#7FC7A8}
-.side-note{margin-top:10px;font-size:10px;line-height:1.6;color:#5F574F;padding:10px;background:#1B1714;border-radius:8px}
+.cloud-pill{font-size:11px;color:#7FC7A8;background:rgba(127,199,168,.10);border:1px solid rgba(127,199,168,.28);
+  padding:4px 10px;border-radius:999px;white-space:nowrap;transition:.2s}
+.cloud-pill.warn{color:#E0A05A;background:rgba(224,160,90,.10);border-color:rgba(224,160,90,.28)}
+.cloud-pill.err{color:#E0715A;background:rgba(224,113,90,.10);border-color:rgba(224,113,90,.28)}.side-note{margin-top:10px;font-size:10px;line-height:1.6;color:#5F574F;padding:10px;background:#1B1714;border-radius:8px}
 
 /* 中间舞台 */
 .viewport{display:flex;flex-direction:column;min-width:0;position:relative}
