@@ -379,8 +379,8 @@
   function fitDevice() {
     const wrap = document.querySelector('.device-wrap');
     if (!wrap) return;
-    const availH = wrap.clientHeight - 44;   // 预留手机下方的说明文字
-    const availW = wrap.clientWidth - 32;
+    const availH = wrap.clientHeight - 74;   // 预留上下内边距与手机下方的说明文字
+    const availW = wrap.clientWidth - 40;
     let s = Math.min(1, availH / 868, availW / 414);
     s = Math.max(0.4, s);
     document.documentElement.style.setProperty('--dev-scale', s.toFixed(3));
