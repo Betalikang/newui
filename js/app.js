@@ -375,15 +375,20 @@
   });
   $('btnRestart').addEventListener('click', () => { state.stack = []; state.ver = 2; state.people = 1; go('s01', false); toast('已回到首页'); });
 
-  /* 自适应缩放：小窗口下缩小整机 */
+  /* 自适应缩放：窗口过窄或过矮时整体缩小，保证整机（含底部导航栏）完整可见 */
   function fitDevice() {
     const wrap = document.querySelector('.device-wrap');
-    const availH = wrap.clientHeight - 40;
-    let s = Math.min(1, availH / 868);
-    s = Math.max(0.52, s);
+    if (!wrap) return;
+    const availH = wrap.clientHeight - 44;   // 预留手机下方的说明文字
+    const availW = wrap.clientWidth - 32;
+    let s = Math.min(1, availH / 868, availW / 414);
+    s = Math.max(0.4, s);
     document.documentElement.style.setProperty('--dev-scale', s.toFixed(3));
   }
   window.addEventListener('resize', fitDevice);
+  window.addEventListener('orientationchange', fitDevice);
+  window.addEventListener('load', fitDevice);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitDevice).catch(() => {});
 
   // 暴露导航图标供渲染
   window.NAV_ICON = {

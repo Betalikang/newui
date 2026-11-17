@@ -15,7 +15,7 @@ body{
   background:radial-gradient(1200px 700px at 60% -10%,#2B211B 0%,#13100E 60%,#0D0B0A 100%);
   color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased;
 }
-.stage{display:grid;grid-template-columns:280px 1fr;height:100vh;min-height:640px}
+.stage{display:grid;grid-template-columns:280px 1fr;height:100vh;height:100dvh;min-height:0}
 
 /* 侧栏 */
 .panel{background:linear-gradient(180deg,var(--panel2),var(--panel));overflow-y:auto;border-color:var(--line)}
@@ -52,7 +52,7 @@ body{
 .cloud-pill.err{color:#E0715A;background:rgba(224,113,90,.10);border-color:rgba(224,113,90,.28)}.side-note{margin-top:10px;font-size:10px;line-height:1.6;color:#5F574F;padding:10px;background:#1B1714;border-radius:8px}
 
 /* 中间舞台 */
-.viewport{display:flex;flex-direction:column;min-width:0;position:relative}
+.viewport{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative}
 .vp-topbar{height:58px;flex:0 0 58px;display:flex;align-items:center;justify-content:space-between;
   padding:0 26px;border-bottom:1px solid var(--line);background:rgba(19,16,14,.6)}
 .vp-crumb{font-size:13px;color:#8E8377;display:flex;gap:8px;align-items:center}
@@ -64,7 +64,7 @@ body{
 .tool-btn{font:inherit;font-size:12px;color:#C9BFB2;background:#241F1B;border:1px solid var(--line);
   padding:6px 14px;border-radius:8px;cursor:pointer;transition:.16s}
 .tool-btn:hover{background:var(--zhu);border-color:var(--zhu);color:#fff}
-.device-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+.device-wrap{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
   padding:18px;overflow:auto}
 
 /* 手机外壳 */
