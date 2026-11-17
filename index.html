@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>遗韵杨家埠 · 移动端文化学习体验</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23C1402E'/><text x='50' y='72' font-size='64' text-anchor='middle' fill='%23fff'>遗</text></svg>">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="stage">
+  <aside class="panel panel-left">
+    <div class="side-head">
+      <div class="side-logo">遗</div>
+      <div>
+        <div class="side-title">遗韵杨家埠</div>
+        <div class="side-sub">木版年画 × 潍坊风筝</div>
+      </div>
+    </div>
+
+    <div class="side-tagline">把年画与风筝，读成一堂活态课。<br>浏览、练习、到访、分享，一条完整路径。</div>
+
+    <div class="side-section-label">功能模块</div>
+    <nav class="side-nav" id="sideNav"></nav>
+
+    <div class="side-section-label">全部页面</div>
+    <nav class="page-list" id="pageList"></nav>
+
+    <div class="side-foot">
+      <div class="side-foot-row"><span>画布</span><b>390 × 844</b></div>
+      <div class="side-foot-row"><span>页面</span><b>24 屏</b></div>
+      <div class="side-foot-row"><span>版本</span><b class="ok">正式版</b></div>
+      <div class="side-note">李康 · 潍坊学院　|　移动端文化学习体验</div>
+    </div>
+  </aside>
+
+  <main class="viewport">
+    <div class="vp-topbar">
+      <div class="vp-crumb"><span>遗韵杨家埠</span><span class="sep">/</span><span id="crumbName">每日遗珍</span></div>
+      <div class="vp-tools">
+        <span class="hint-pill">移动端文化学习体验</span>
+        <button class="tool-btn" id="btnRestart" title="回到首页">首页</button>
+      </div>
+    </div>
+
+    <div class="device-wrap">
+      <div class="device">
+        <div class="device-notch"></div>
+        <div class="device-screen" id="screen">
+          <div class="app" id="app"></div>
+          <div class="toast" id="toast"></div>
+          <div class="loading-mask" id="loadingMask"><div class="spinner"></div><div class="loading-txt">正在提交预约…</div></div>
+        </div>
+        <div class="device-home"></div>
+      </div>
+      <div class="device-caption">
+        <span class="dot"></span>
+        <span id="capText">览遗 · 每日遗珍</span>
+        <span class="cap-sep">·</span>
+        <span>遗韵杨家埠</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/screens.js"></script>
+<script src="js/screens_ext.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
